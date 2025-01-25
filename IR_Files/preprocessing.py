@@ -1,4 +1,6 @@
 import nltk
+import re
+nltk.download('punkt_tab')
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
@@ -18,8 +20,17 @@ def tokenize(text):
     """
     Tokenize the text using NLTK's word_tokenize
     """
+
+    text = re.sub(r'[^a-zA-Z\s]', '', text) # Doing this to filter out the punctuation and number
+
     tokens = word_tokenize(text.lower())
-    return tokens
+    filtered_tokens = []
+
+    for token in tokens:
+        if token not in stop_words:
+            filtered_tokens.append(token) #Filters out stopwords
+
+    return filtered_tokens
 
 def stem_tokens(tokens):
     return [stemmer.stem(token) for token in tokens]

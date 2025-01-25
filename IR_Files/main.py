@@ -7,6 +7,7 @@ from beir_ranking import rank_documents
 from utils import *
 import os
 
+
 dataset = "../scifact/qrels/train.tsv"  # Change to dataset being used
 doc_folder_path = '../scifact/corpus.jsonl'
 query_file_path = '../scifact/queries.jsonl'
