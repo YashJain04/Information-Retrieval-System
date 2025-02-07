@@ -21,7 +21,7 @@ print("Parsing documents")
 documents = []
 queries = parse_queries_from_file(query_file_path)
 
-# Preprocess documents and queries
+# Preprocess documents and queries - step 1
 if os.path.exists(preprocessed_docs_path):
     print("Loading preprocessed documents")
     documents = load_preprocessed_data(preprocessed_docs_path)
@@ -40,7 +40,7 @@ else:
 
 start_time = time.time()
 
-# Build or load inverted index
+# Build or load inverted index - step 2
 try:
     inverted_index = load_inverted_index(index_file_path)
     print("Inverted index loaded successfully.")
@@ -81,6 +81,7 @@ model_type = "sentence-bert"
 #model_name = "msmarco-roberta-base-ance-firstp"
 #model_type = "ance"
 
+# step 3
 results = rank_documents(documents, queries, model_name=model_name, model_type=model_type, rerank=False)  # Set rerank=True for Cross-Encoder models
 end_time = time.time()
 save_results(results, results_file)
