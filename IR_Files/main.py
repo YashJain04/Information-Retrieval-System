@@ -63,8 +63,8 @@ beir_results = {}
 
 print("Ranking and writing to results file")
 start_time = time.time()
-#bm25 = BM25(inverted_index, doc_lengths)    #Uncomment these 2 lines
-#writeResults(results_file, queries, bm25)   #To use the baseline BM25
+bm25 = BM25(inverted_index, doc_lengths)    #Uncomment these 2 lines
+writeResults(results_file, queries, bm25)   #To use the baseline BM25
 
 #model_name = "BeIR/sparta-msmarco-distilbert-base-v1"
 #model_type = "sparta"
