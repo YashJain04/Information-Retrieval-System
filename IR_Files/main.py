@@ -11,9 +11,9 @@ import os
 dataset = "../scifact/qrels/train.tsv"  # Change to dataset being used
 doc_folder_path = '../scifact/corpus.jsonl'
 query_file_path = '../scifact/queries.jsonl'
-index_file_path = 'inverted_index.json'
-preprocessed_docs_path = 'preprocessed_documents.json'
-preprocessed_queries_path = 'preprocessed_queries.json'
+index_file_path = '../IR_FILES/inverted_index.json'
+preprocessed_docs_path = '../IR_FILES/preprocessed_documents.json'
+preprocessed_queries_path = '../IR_FILES/preprocessed_queries.json'
 
 start_time = time.time()
 
@@ -28,7 +28,7 @@ if os.path.exists(preprocessed_docs_path):
 else:
     print("Preprocessing documents")
     documents = parse_documents_from_file(doc_folder_path)
-    documents = preprocess_documents(parse_documents_from_file(doc_folder_path))
+    documents = preprocess_documents(documents)
     save_preprocessed_data(documents, preprocessed_docs_path)
 if os.path.exists(preprocessed_queries_path):
     print("Loading preprocessed queries")
