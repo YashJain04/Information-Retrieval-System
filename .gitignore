@@ -1,5 +1,6 @@
 .DS_STORE
-IR_FILES/Results.json
-IR_FILES/inverted_index.json
-IR_FILES/preprocessed_documents.json
-IR_FILES/preprocessed_queries.json
+IR_Files/Results.json
+IR_Files/inverted_index.json
+IR_Files/preprocessed_documents.json
+IR_Files/preprocessed_queries.json
+IR_Files/__pycache__/
