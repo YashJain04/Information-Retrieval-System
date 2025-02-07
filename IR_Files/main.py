@@ -11,9 +11,9 @@ import os
 dataset = "../scifact/qrels/train.tsv"  # Change to dataset being used
 doc_folder_path = '../scifact/corpus.jsonl'
 query_file_path = '../scifact/queries.jsonl'
-index_file_path = '../IR_FILES/inverted_index.json'
-preprocessed_docs_path = '../IR_FILES/preprocessed_documents.json'
-preprocessed_queries_path = '../IR_FILES/preprocessed_queries.json'
+index_file_path = '../IR_Files/inverted_index.json'
+preprocessed_docs_path = '../IR_Files/preprocessed_documents.json'
+preprocessed_queries_path = '../IR_Files/preprocessed_queries.json'
 
 start_time = time.time()
 
