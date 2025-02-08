@@ -1,3 +1,5 @@
+import json
+
 def build_inverted_index(documents):
     """
     Build an inverted index from the preprocessed documents
@@ -23,3 +25,7 @@ def calculate_document_lengths(documents):
         doc_length = len(text_tokens)
         doc_lengths[doc_id] = doc_length
     return doc_lengths
+
+def save_inverted_index(inverted_index, file_path):
+    with open(file_path, 'w', encoding='utf-8') as file:
+        json.dump(inverted_index, file, indent=4)

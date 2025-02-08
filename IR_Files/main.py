@@ -29,10 +29,11 @@ print(f"Time taken to complete STEP 0 (PARSING DOCS): {end_time - start_time:.2f
 print("")
 start_time = time.time() # start the timer
 print("Preprocessing documents")
-documents = parse_documents_from_file(doc_folder_path)
-documents = preprocess_documents(documents)
+documents = preprocess_documents(parse_documents_from_file(doc_folder_path))
+save_preprocessed_data(documents, preprocessed_docs_path)
 print("Preprocessing queries")
 queries = preprocess_queries(parse_queries_from_file(query_file_path))
+save_preprocessed_data(queries, preprocessed_queries_path)
 end_time = time.time() # end the timer
 print(f"Time taken to complete STEP 1 (PREPROCESS DOCS/QUERIES): {end_time - start_time:.2f} seconds")
 
@@ -41,6 +42,7 @@ print("")
 start_time = time.time() # start the timer
 print("Building an inverted index.")
 inverted_index = build_inverted_index(documents)
+save_inverted_index(inverted_index, index_file_path)
 end_time = time.time() # end the timer
 print(f"Time taken to complete STEP 2 (BUILD INVERTED INDEX): {end_time - start_time:.2f} seconds")
 
