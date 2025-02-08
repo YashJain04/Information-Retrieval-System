@@ -24,27 +24,28 @@ def progress_bar(current, total, bar_length=50):
 
 def writeResults(results_file, queries, bm25):
     beir_results = {}
-    results_timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    results_timestamp = "run-name"
     count = 1
 
     with open(results_file, 'w') as output_file:
         for query in queries:
             query_id = query['num']
             query_terms = query['title']
-            #print("Ranking Query " + str(query_id))
             progress_bar(count, len(queries))
             ranked_docs = bm25.rank_documents(query_terms)
             normalized_ranked_docs = normalize_scores(ranked_docs)
-            count = count + 1
+            count += 1
 
-            if ('json' in results_file):
-                beir_results[query_id] = [(doc_id, score) for doc_id, score in normalized_ranked_docs]
-            else:
-                # Write results to file in TREC eval format
-                for rank, (doc_id, score) in enumerate(normalized_ranked_docs, start=1):
-                    result_line = f"{query_id} Q0 {doc_id} {rank} {score} {results_timestamp}\n"
+            if normalized_ranked_docs:  # Ensure there's at least one result
+                top_doc_id, top_score = normalized_ranked_docs[0]  # Get only the top result
+
+                if 'json' in results_file:
+                    beir_results[query_id] = [(top_doc_id, top_score)]
+                else:
+                    result_line = f"{query_id} Q0 {top_doc_id} 1 {top_score} {results_timestamp}\n"
                     output_file.write(result_line)
-        if ('json' in results_file):
+
+        if 'json' in results_file:
             json.dump(beir_results, output_file, indent=4)
 
 def save_results(results, output_file):

@@ -28,16 +28,6 @@ class BM25:
                 term_score = idf_value * (tf * (self.k1 + 1)) / (tf + self.k1 * (1 - self.b + self.b * doc_length / self.avgdl))
                 score += term_score
         return score
-    
-    def search(self, corpus, queries, top_k=1000):
-        """
-        Search method compatible with BEIR framework
-        """
-        results = {}
-        for query_id, query in queries.items():
-            ranked_docs = self.rank_documents(query)
-            results[query_id] = {doc_id: score for doc_id, score in ranked_docs[:top_k]}
-        return results    
 
     def rank_documents(self, query_terms):
         """
