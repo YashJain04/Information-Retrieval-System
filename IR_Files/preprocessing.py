@@ -1,12 +1,10 @@
 import nltk
 import re
 nltk.download('punkt_tab')
-from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
 from utils import progress_bar
 import time
-import json
 
 def load_stopwords(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -67,12 +65,3 @@ def preprocess_queries(queries):
     for query in queries:
         query['title'] = preprocess_text(query['title'])
     return queries
-
-def save_preprocessed_data(data, file_path):
-    with open(file_path, 'w', encoding='utf-8') as file:
-        json.dump(data, file, indent=4)
-
-def load_preprocessed_data(file_path):
-    with open(file_path, 'r', encoding='utf-8') as file:
-        data = json.load(file)
-    return data

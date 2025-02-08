@@ -1,17 +1,6 @@
-import csv
 import sys
 import json
-import datetime
-import time
 from ranking import normalize_scores
-
-dataset = "scidocs"
-
-def convert_tsv_to_qrels(tsv_path, qrels_path):
-    with open(tsv_path, 'r', encoding='utf-8') as infile, open(qrels_path, 'w', encoding='utf-8') as outfile:
-        tsv_reader = csv.DictReader(infile, delimiter='\t')
-        for row in tsv_reader:
-            outfile.write(f"{row['query-id']} 0 {row['corpus-id']} {row['score']}\n")
 
 def progress_bar(current, total, bar_length=50):
     progress = current / total
@@ -56,6 +45,3 @@ def save_results(results, output_file):
 
     with open(output_file, 'w') as file:
         json.dump(beir_results, file, indent=4)
-
-
-#convert_tsv_to_qrels(dataset + '/qrels/test.tsv', dataset + '/qrels/test.qrels')

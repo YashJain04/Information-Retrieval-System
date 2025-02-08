@@ -1,5 +1,4 @@
 import json
-import os
 
 def parse_document(document_line):
     """
@@ -39,15 +38,3 @@ def parse_queries_from_file(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         parsed_queries = [parse_query(line) for line in file]
     return parsed_queries
-
-
-def parse_documents_from_folder(folder_path):
-    """
-    Read all files in the specified folder and parse documents from each file
-    """
-    all_documents = []
-    for filename in os.listdir(folder_path):
-        file_path = os.path.join(folder_path, filename)
-        if os.path.isfile(file_path):
-            all_documents.extend(parse_documents_from_file(file_path))
-    return all_documents
