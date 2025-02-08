@@ -18,6 +18,7 @@ preprocessed_queries_path = '../IR_Files/preprocessed_queries.json'
 
 # STEP 0 - Parse the document
 start_time = time.time() # start the timer
+print("")
 print("Parsing documents")
 documents = []
 queries = parse_queries_from_file(query_file_path)
@@ -25,6 +26,7 @@ end_time = time.time() # end the timer
 print(f"Time taken to complete STEP 0 (PARSING DOCS): {end_time - start_time:.2f} seconds")
 
 # STEP 1 - Preprocess documents and queries
+print("")
 start_time = time.time() # start the timer
 print("Preprocessing documents")
 documents = parse_documents_from_file(doc_folder_path)
@@ -35,6 +37,7 @@ end_time = time.time() # end the timer
 print(f"Time taken to complete STEP 1 (PREPROCESS DOCS/QUERIES): {end_time - start_time:.2f} seconds")
 
 # STEP 2 - Build or load inverted index
+print("")
 start_time = time.time() # start the timer
 print("Building an inverted index.")
 inverted_index = build_inverted_index(documents)
@@ -43,6 +46,7 @@ print(f"Time taken to complete STEP 2 (BUILD INVERTED INDEX): {end_time - start_
 
 
 # STEP 3 - Retrieval and ranking
+print("")
 start_time = time.time() # start the timer
 doc_lengths = calculate_document_lengths(documents)
 results_file = "Results.txt"   # change to Results.json for other version formatting
@@ -54,10 +58,10 @@ end_time = time.time() # end the timer
 print(f"\nTime taken to complete STEP 3 (RANKING DOCUMENTS): {end_time - start_time:.2f} seconds")
 
 # STEP 4 - Return results
-print(f"Ranking results written to {results_file}")
+print(f"\nRanking results written to {results_file}")
 
 # STEP 5 - Working On Trec Evaluation
-print("Running The TREC_EVAL to retrieve the MAP Scores")
+print("\nRunning The TREC_EVAL to retrieve the MAP Scores")
 
 def read_qrel(file_path):
     '''
