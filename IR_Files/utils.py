@@ -11,9 +11,8 @@ def progress_bar(current, total, bar_length=50):
     sys.stdout.write(text)
     sys.stdout.flush()
 
-def writeResults(results_file, queries, bm25):
+def writeResults(results_file, queries, bm25, run_name):
     beir_results = {}
-    results_timestamp = "run-name"
     count = 1
 
     with open(results_file, 'w') as output_file:
@@ -31,17 +30,8 @@ def writeResults(results_file, queries, bm25):
                 if 'json' in results_file:
                     beir_results[query_id] = [(top_doc_id, top_score)]
                 else:
-                    result_line = f"{query_id} Q0 {top_doc_id} 1 {top_score} {results_timestamp}\n"
+                    result_line = f"{query_id} Q0 {top_doc_id} 1 {top_score} {run_name}\n"
                     output_file.write(result_line)
 
         if 'json' in results_file:
             json.dump(beir_results, output_file, indent=4)
-
-def save_results(results, output_file):
-    beir_results = {}
-
-    for query_id, docs in results.items():
-        beir_results[query_id] = [(doc_id, score) for doc_id, score in docs.items()]
-
-    with open(output_file, 'w') as file:
-        json.dump(beir_results, file, indent=4)

@@ -5,3 +5,5 @@ IR_Files/inverted_index.json
 IR_Files/preprocessed_documents.json
 IR_Files/preprocessed_queries.json
 IR_Files/__pycache__/
+trec_eval-9.0.7/trec_eval
+trec_eval-9.0.7/trec_eval.dSYM/
