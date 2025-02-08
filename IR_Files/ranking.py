@@ -43,6 +43,7 @@ class BM25:
         """
         Rank documents according to their relevance to a given set of query terms using BM25
         """
+        print("this is being this nsubnanaibniajafj")
         scores = {}
         for term in query_terms:
             #print(term)

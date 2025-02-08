@@ -1,5 +1,6 @@
 .DS_STORE
 IR_Files/Results.json
+IR_Files/Results.txt
 IR_Files/inverted_index.json
 IR_Files/preprocessed_documents.json
 IR_Files/preprocessed_queries.json
