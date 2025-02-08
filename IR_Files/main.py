@@ -90,15 +90,20 @@ print(f"Ranking results written to {results_file}")
 # STEP 5 REVAMPED - Running TREC_EVAL
 # Function to read qrel from file (test.tsv)
 print("RUNNING TREC EVAL WOOHOO")
+# Function to read qrel from file (test.tsv)
 def read_qrel(file_path):
     qrel = {}
     with open(file_path, 'r') as f:
+        # Skip header row if it exists
+        header = f.readline()  # Read and discard the header
         for line in f:
-            query_id, doc_id, relevance = line.strip().split('\t')
-            relevance = int(relevance)
-            if query_id not in qrel:
-                qrel[query_id] = {}
-            qrel[query_id][doc_id] = relevance
+            parts = line.strip().split()
+            if len(parts) == 3:
+                query_id, doc_id, relevance = parts
+                relevance = int(relevance)  # Convert relevance to an integer
+                if query_id not in qrel:
+                    qrel[query_id] = {}
+                qrel[query_id][doc_id] = relevance
     return qrel
 
 # Function to read run from file (Results.txt)
