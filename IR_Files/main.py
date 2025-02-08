@@ -59,6 +59,7 @@ print(f"\nTime taken to complete STEP 3 (RANKING DOCUMENTS): {end_time - start_t
 
 # STEP 4 - Return results
 print(f"\nRanking results written to {results_file}")
+print("STEP 4 COMPLETE")
 
 # STEP 5 - Working On Trec Evaluation
 print("\nRunning The TREC_EVAL to retrieve the MAP Scores")
@@ -125,3 +126,4 @@ total_map = round(total_map, 3)
 
 # print the average map score
 print("The average MAP Score is: ", total_map)
+print("STEP 5 COMPLETE")
