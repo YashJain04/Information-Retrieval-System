@@ -66,8 +66,6 @@ def preprocess_documents(documents):
 def preprocess_queries(queries):
     for query in queries:
         query['title'] = preprocess_text(query['title'])
-        query['query'] = preprocess_text(query['query'])
-        query['narrative'] = preprocess_text(query['narrative'])
     return queries
 
 def save_preprocessed_data(data, file_path):

@@ -10,7 +10,6 @@ def parse_document(document_line):
         'DOCNO': doc['_id'],
         'HEAD': doc.get('title', 'NO_TITLE'),
         'TEXT': doc.get('text', 'NO_TEXT'),
-        'URL': doc.get('metadata', {}).get('url', 'NO_URL')
     }
     return parsed_doc
 
@@ -30,9 +29,6 @@ def parse_query(query_line):
     parsed_query = {
         'num': query['_id'],
         'title': query.get('text', 'NO_TEXT'),
-        'query': query.get('metadata', {}).get('query', 'NO_QUERY'),
-        'narrative': query.get('metadata', {}).get('narrative', 'NO_NARRATIVE'),
-        'url': query.get('metadata', {}).get('url', 'NO_URL')
     }
     return parsed_query
 

@@ -30,7 +30,7 @@ def writeResults(results_file, queries, bm25):
     with open(results_file, 'w') as output_file:
         for query in queries:
             query_id = query['num']
-            query_terms = query['title'] + query['query'] + query['narrative']
+            query_terms = query['title']
             #print("Ranking Query " + str(query_id))
             progress_bar(count, len(queries))
             ranked_docs = bm25.rank_documents(query_terms)
