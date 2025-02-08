@@ -124,7 +124,7 @@ print(f"Evaluation results saved to {output_file}")
 total_map = sum(results[query]['map'] for query in results) / len(results)  # average map scores for all queries
 
 # round to 3 decimal places
-total_map = round(total_map, 3)
+total_map = round(total_map, 5)
 
 # print the average map score
 print("The average MAP Score is: ", total_map)
