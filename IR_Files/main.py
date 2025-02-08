@@ -139,3 +139,8 @@ with open(output_file, 'w') as f:
 
 # Return the path to the results file
 print(f"Evaluation results saved to {output_file}")
+
+total_map = sum(results[query]['map'] for query in results) / len(results)  # Average MAP score over all queries
+total_map = round(total_map, 3)
+
+print("THIS IS THE AVERAGE MAP SCORE", total_map)
