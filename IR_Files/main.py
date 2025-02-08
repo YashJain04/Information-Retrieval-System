@@ -57,32 +57,80 @@ print(f"\nTime taken to complete STEP 3 (RANKING DOCUMENTS): {end_time - start_t
 print(f"Ranking results written to {results_file}")
 
 # STEP 5 - Working On Trec Evaluation
-print("RETRIEVING THE MAP SCORES")
-qrel = {
-    'q1': {
-        'd1': 0,
-        'd2': 1,
-        'd3': 0,
-    },
-    'q2': {
-        'd2': 1,
-        'd3': 1,
-    },
-}
+# print("RETRIEVING THE MAP SCORES")
+# qrel = {
+#     'q1': {
+#         'd1': 0,
+#         'd2': 1,
+#         'd3': 0,
+#     },
+#     'q2': {
+#         'd2': 1,
+#         'd3': 1,
+#     },
+# }
 
-run = {
-    'q1': {
-        'd1': 1.0,
-        'd2': 0.0,
-        'd3': 1.5,
-    },
-    'q2': {
-        'd1': 1.5,
-        'd2': 0.2,
-        'd3': 0.5,
-    }
-}
+# run = {
+#     'q1': {
+#         'd1': 1.0,
+#         'd2': 0.0,
+#         'd3': 1.5,
+#     },
+#     'q2': {
+#         'd1': 1.5,
+#         'd2': 0.2,
+#         'd3': 0.5,
+#     }
+# }
 
+# evaluator = pytrec_eval.RelevanceEvaluator(qrel, {'map', 'ndcg'})
+
+# print(json.dumps(evaluator.evaluate(run), indent=1))
+
+# STEP 5 REVAMPED - Running TREC_EVAL
+# Function to read qrel from file (test.tsv)
+print("RUNNING TREC EVAL WOOHOO")
+def read_qrel(file_path):
+    qrel = {}
+    with open(file_path, 'r') as f:
+        for line in f:
+            query_id, doc_id, relevance = line.strip().split('\t')
+            relevance = int(relevance)
+            if query_id not in qrel:
+                qrel[query_id] = {}
+            qrel[query_id][doc_id] = relevance
+    return qrel
+
+# Function to read run from file (Results.txt)
+def read_run(file_path):
+    run = {}
+    with open(file_path, 'r') as f:
+        for line in f:
+            # Split by any whitespace
+            parts = line.strip().split()
+            # Ensure we have 6 columns
+            if len(parts) >= 5:
+                query_id, _, doc_id, rank, score, _ = parts[:6]
+                score = float(score)
+                if query_id not in run:
+                    run[query_id] = {}
+                run[query_id][doc_id] = score
+    return run
+
+# Load qrel and run from files
+qrel_file = "../scifact/qrels/test.tsv"
+run_file = 'Results.txt'
+qrel = read_qrel(qrel_file)
+run = read_run(run_file)
+
+# Evaluate using pytrec_eval
 evaluator = pytrec_eval.RelevanceEvaluator(qrel, {'map', 'ndcg'})
+results = evaluator.evaluate(run)
 
-print(json.dumps(evaluator.evaluate(run), indent=1))
+# Save the results to a file
+output_file = 'evaluation_results.json'
+with open(output_file, 'w') as f:
+    json.dump(results, f, indent=1)
+
+# Return the path to the results file
+print(f"Evaluation results saved to {output_file}")
