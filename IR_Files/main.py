@@ -57,64 +57,35 @@ print(f"\nTime taken to complete STEP 3 (RANKING DOCUMENTS): {end_time - start_t
 print(f"Ranking results written to {results_file}")
 
 # STEP 5 - Working On Trec Evaluation
-# print("RETRIEVING THE MAP SCORES")
-# qrel = {
-#     'q1': {
-#         'd1': 0,
-#         'd2': 1,
-#         'd3': 0,
-#     },
-#     'q2': {
-#         'd2': 1,
-#         'd3': 1,
-#     },
-# }
+print("Running The TREC_EVAL to retrieve the MAP Scores")
 
-# run = {
-#     'q1': {
-#         'd1': 1.0,
-#         'd2': 0.0,
-#         'd3': 1.5,
-#     },
-#     'q2': {
-#         'd1': 1.5,
-#         'd2': 0.2,
-#         'd3': 0.5,
-#     }
-# }
-
-# evaluator = pytrec_eval.RelevanceEvaluator(qrel, {'map', 'ndcg'})
-
-# print(json.dumps(evaluator.evaluate(run), indent=1))
-
-# STEP 5 REVAMPED - Running TREC_EVAL
-# Function to read qrel from file (test.tsv)
-print("RUNNING TREC EVAL WOOHOO")
-# Function to read qrel from file (test.tsv)
 def read_qrel(file_path):
+    '''
+    Read the test file (test.tsv) and store it in qrel
+    '''
     qrel = {}
     with open(file_path, 'r') as f:
-        # Skip header row if it exists
-        header = f.readline()  # Read and discard the header
+        # skip the header
+        header = f.readline()  # read and discard the header
         for line in f:
             parts = line.strip().split()
             if len(parts) == 3:
                 query_id, doc_id, relevance = parts
-                relevance = int(relevance)  # Convert relevance to an integer
+                relevance = int(relevance)  # convert relevance to an integer
                 if query_id not in qrel:
                     qrel[query_id] = {}
                 qrel[query_id][doc_id] = relevance
     return qrel
 
-# Function to read run from file (Results.txt)
 def read_run(file_path):
+    '''
+    Read the results file (Results.txt) and store it in run
+    '''
     run = {}
     with open(file_path, 'r') as f:
         for line in f:
-            # Split by any whitespace
-            parts = line.strip().split()
-            # Ensure we have 6 columns
-            if len(parts) >= 5:
+            parts = line.strip().split() # split by any whitespace
+            if len(parts) >= 5: # ensure we have 6 columns
                 query_id, _, doc_id, rank, score, _ = parts[:6]
                 score = float(score)
                 if query_id not in run:
@@ -122,25 +93,31 @@ def read_run(file_path):
                 run[query_id][doc_id] = score
     return run
 
-# Load qrel and run from files
+# get the file paths
 qrel_file = "../scifact/qrels/test.tsv"
 run_file = 'Results.txt'
+
+# read the files (qrel) and (run)
 qrel = read_qrel(qrel_file)
 run = read_run(run_file)
 
-# Evaluate using pytrec_eval
+# evaluate using pytrec_eval
 evaluator = pytrec_eval.RelevanceEvaluator(qrel, {'map', 'ndcg'})
 results = evaluator.evaluate(run)
 
-# Save the results to a file
-output_file = 'evaluation_results.json'
+# save the results to a file
+output_file = 'EvaluationResults.json'
 with open(output_file, 'w') as f:
     json.dump(results, f, indent=1)
 
-# Return the path to the results file
+# return the path to the results file
 print(f"Evaluation results saved to {output_file}")
 
-total_map = sum(results[query]['map'] for query in results) / len(results)  # Average MAP score over all queries
+# get the average MAP score
+total_map = sum(results[query]['map'] for query in results) / len(results)  # average map scores for all queries
+
+# round to 3 decimal places
 total_map = round(total_map, 3)
 
-print("THIS IS THE AVERAGE MAP SCORE", total_map)
+# print the average map score
+print("The average MAP Score is: ", total_map)
