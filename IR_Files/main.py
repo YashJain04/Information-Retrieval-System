@@ -3,7 +3,6 @@ from parser import *
 from preprocessing import *
 from indexing import *
 from ranking import *
-from beir_ranking import rank_documents
 from utils import *
 import os
 
@@ -57,34 +56,16 @@ sorted_words = sorted(doc_frequency.items(), key=lambda item: item[1], reverse=T
 
 doc_lengths = calculate_document_lengths(documents)
 
-results_file = "Results.json"   #Change to Results.txt for TREC formatting
+results_file = "Results.txt"   #Change to Results.txt for TREC formatting
 start_time = time.time()
 beir_results = {}
 
 print("Ranking and writing to results file")
 start_time = time.time()
+
 bm25 = BM25(inverted_index, doc_lengths)    #Uncomment these 2 lines
 writeResults(results_file, queries, bm25)   #To use the baseline BM25
 
-#model_name = "BeIR/sparta-msmarco-distilbert-base-v1"
-#model_type = "sparta"
-
-model_name = "msmarco-distilbert-base-v3"
-model_type = "sentence-bert"
-
-#model_name = "https://tfhub.dev/google/universal-sentence-encoder-qa/3"
-#model_type = "use-qa"
-
-#model_name = "dpr"
-#model_type = "dpr"
-
-#model_name = "msmarco-roberta-base-ance-firstp"
-#model_type = "ance"
-
-# step 3
-results = rank_documents(documents, queries, model_name=model_name, model_type=model_type, rerank=False)  # Set rerank=True for Cross-Encoder models
 end_time = time.time()
-save_results(results, results_file)
 print(f"\nTime taken to rank documents: {end_time - start_time:.2f} seconds")
-
 print(f"Ranking results written to {results_file}")
