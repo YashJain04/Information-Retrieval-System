@@ -5,6 +5,8 @@ from preprocessing import *
 from indexing import *
 from ranking import *
 from utils import *
+import pytrec_eval
+import json
 
 # file directories
 dataset = "../scifact/qrels/train.tsv" # not accessed
@@ -53,3 +55,34 @@ print(f"\nTime taken to complete STEP 3 (RANKING DOCUMENTS): {end_time - start_t
 
 # STEP 4 - Return results
 print(f"Ranking results written to {results_file}")
+
+# STEP 5 - Working On Trec Evaluation
+print("RETRIEVING THE MAP SCORES")
+qrel = {
+    'q1': {
+        'd1': 0,
+        'd2': 1,
+        'd3': 0,
+    },
+    'q2': {
+        'd2': 1,
+        'd3': 1,
+    },
+}
+
+run = {
+    'q1': {
+        'd1': 1.0,
+        'd2': 0.0,
+        'd3': 1.5,
+    },
+    'q2': {
+        'd1': 1.5,
+        'd2': 0.2,
+        'd3': 0.5,
+    }
+}
+
+evaluator = pytrec_eval.RelevanceEvaluator(qrel, {'map', 'ndcg'})
+
+print(json.dumps(evaluator.evaluate(run), indent=1))
