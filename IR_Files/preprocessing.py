@@ -36,7 +36,7 @@ def stem_tokens(tokens):
     return [stemmer.stem(token) for token in tokens]
 
 def remove_extras(tokens):
-    return [token for token in tokens if token not in stop_words]
+    return [token for token in tokens if token not in stop_words and token not in ['no_queri', 'no_narr']]
 
 def preprocess_text(text):
     tokens = tokenize(text)
