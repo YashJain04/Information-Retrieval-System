@@ -31,12 +31,15 @@ start_time = time.time() # start the timer
 print("Preprocessing documents")
 documents = parse_documents_from_file(doc_folder_path)
 
-documents = preprocess_documents(documents)
-#documents = preprocess_documents_head_only(documents)
+#documents = preprocess_documents(documents)
+documents = preprocess_documents_head_only(documents)
 # if you want to preprocess only the head of the documents, use the above line instead, and uncomment the line above it
 
+documents = preprocess_documents(parse_documents_from_file(doc_folder_path))
+save_preprocessed_data(documents, preprocessed_docs_path)
 print("Preprocessing queries")
 queries = preprocess_queries(parse_queries_from_file(query_file_path))
+save_preprocessed_data(queries, preprocessed_queries_path)
 end_time = time.time() # end the timer
 print(f"Time taken to complete STEP 1 (PREPROCESS DOCS/QUERIES): {end_time - start_time:.2f} seconds")
 
@@ -45,10 +48,11 @@ print("")
 start_time = time.time() # start the timer
 print("Building an inverted index.")
 
-inverted_index = build_inverted_index(documents)
-#inverted_index = build_inverted_index_head_only(documents)
+#inverted_index = build_inverted_index(documents)
+inverted_index = build_inverted_index_head_only(documents)
 # if you want to build the inverted index using only the head of the documents, use the above line instead, and uncomment the line above it
 
+save_inverted_index(inverted_index, index_file_path)
 end_time = time.time() # end the timer
 print(f"Time taken to complete STEP 2 (BUILD INVERTED INDEX): {end_time - start_time:.2f} seconds")
 
@@ -57,8 +61,8 @@ print(f"Time taken to complete STEP 2 (BUILD INVERTED INDEX): {end_time - start_
 print("")
 start_time = time.time() # start the timer
 
-doc_lengths = calculate_document_lengths(documents)
-#doc_lengths = calculate_document_lengths_head_only(documents)
+#doc_lengths = calculate_document_lengths(documents)
+doc_lengths = calculate_document_lengths_head_only(documents)
 # if you want to calculate the document lengths using only the head of the documents, use the above line instead, and uncomment the line above it
 
 results_file = "Results.txt"   # change to Results.json for other version formatting
@@ -73,7 +77,7 @@ print(f"\nTime taken to complete STEP 3 (RANKING DOCUMENTS): {end_time - start_t
 print(f"\nRanking results written to {results_file}")
 print("STEP 4 COMPLETE")
 
-# STEP 5 - Working On Trec Evaluation
+# STEP 5 - Computing MAP Scores Through PYTREC_EVAL
 print("\nRunning The TREC_EVAL to retrieve the MAP Scores")
 
 def read_qrel(file_path):
@@ -134,7 +138,7 @@ print(f"Evaluation results saved to {output_file}")
 total_map = sum(results[query]['map'] for query in results) / len(results)  # average map scores for all queries
 
 # round to 3 decimal places
-total_map = round(total_map, 3)
+total_map = round(total_map, 5)
 
 # print the average map score
 print("The average MAP Score is: ", total_map)

@@ -5,6 +5,7 @@ from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
 from utils import progress_bar
 import time
+import json
 
 def load_stopwords(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -54,9 +55,9 @@ def preprocess_documents(documents):
             progress_bar(count, len(documents))
             previousId = fileId
             count = count + 1
-        doc['TEXT'] = preprocess_text(doc['TEXT'])
         doc['HEAD'] = preprocess_text(doc['HEAD'])
-    
+        doc['TEXT'] = preprocess_text(doc['TEXT'])
+        
     end_time = time.time()
     print(f"\nTime taken to parse and preprocess documents: {end_time - start_time:.2f} seconds")
     return documents
@@ -88,3 +89,7 @@ def preprocess_queries(queries):
     for query in queries:
         query['title'] = preprocess_text(query['title'])
     return queries
+
+def save_preprocessed_data(data, file_path):
+    with open(file_path, 'w', encoding='utf-8') as file:
+        json.dump(data, file, indent=4)
