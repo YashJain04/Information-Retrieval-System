@@ -44,6 +44,10 @@ print("Preprocessing queries")
 queries = preprocess_queries(parse_queries_from_file(query_file_path))
 save_preprocessed_data(queries, preprocessed_queries_path)
 print("The length of the vocabulary is", len(documents))
+
+with open("../Results_Scores/Sample100Vocabulary.txt", "w", encoding="utf-8") as f:
+    json.dump(documents[:100], f, indent=4)  # Pretty-print for readability
+
 end_time = time.time() # end the timer
 print(f"Time taken to complete STEP 1 (PREPROCESS DOCS/QUERIES): {end_time - start_time:.2f} seconds")
 print("")
