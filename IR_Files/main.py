@@ -9,23 +9,26 @@ import pytrec_eval
 import json
 
 # file directories
-dataset = "../scifact/qrels/train.tsv" # not accessed
 doc_folder_path = '../scifact/corpus.jsonl'
 query_file_path = '../scifact/queries.jsonl'
-index_file_path = '../IR_Files/inverted_index.json'
-preprocessed_docs_path = '../IR_Files/preprocessed_documents.json'
-preprocessed_queries_path = '../IR_Files/preprocessed_queries.json'
+index_file_path = '../Results_Scores/inverted_index.json'
+preprocessed_docs_path = '../Results_Scores/preprocessed_documents.json'
+preprocessed_queries_path = '../Results_Scores/preprocessed_queries.json'
 
 # STEP 0 - Parse the document
 start_time = time.time() # start the timer
+print("---------------------------------------------------------------------------------------")
 print("")
 print("Parsing documents")
 documents = []
 queries = parse_queries_from_file(query_file_path)
 end_time = time.time() # end the timer
 print(f"Time taken to complete STEP 0 (PARSING DOCS): {end_time - start_time:.2f} seconds")
+print("")
+print("---------------------------------------------------------------------------------------")
 
 # STEP 1 - Preprocess documents and queries
+print("---------------------------------------------------------------------------------------")
 print("")
 start_time = time.time() # start the timer
 print("Preprocessing documents")
@@ -40,10 +43,14 @@ save_preprocessed_data(documents, preprocessed_docs_path)
 print("Preprocessing queries")
 queries = preprocess_queries(parse_queries_from_file(query_file_path))
 save_preprocessed_data(queries, preprocessed_queries_path)
+print("The length of the vocabulary is", len(documents))
 end_time = time.time() # end the timer
 print(f"Time taken to complete STEP 1 (PREPROCESS DOCS/QUERIES): {end_time - start_time:.2f} seconds")
+print("")
+print("---------------------------------------------------------------------------------------")
 
 # STEP 2 - Build or load inverted index
+print("---------------------------------------------------------------------------------------")
 print("")
 start_time = time.time() # start the timer
 print("Building an inverted index.")
@@ -55,9 +62,12 @@ inverted_index = build_inverted_index(documents)
 save_inverted_index(inverted_index, index_file_path)
 end_time = time.time() # end the timer
 print(f"Time taken to complete STEP 2 (BUILD INVERTED INDEX): {end_time - start_time:.2f} seconds")
+print("")
+print("---------------------------------------------------------------------------------------")
 
 
 # STEP 3 - Retrieval and ranking
+print("---------------------------------------------------------------------------------------")
 print("")
 start_time = time.time() # start the timer
 
@@ -65,19 +75,34 @@ doc_lengths = calculate_document_lengths(documents)
 #doc_lengths = calculate_document_lengths_head_only(documents)
 # if you want to calculate the document lengths using only the head of the documents, use the above line instead, and uncomment the line above it
 
-results_file = "Results.txt"   # change to Results.json for other version formatting
 beir_results = {}
 print("Ranking and writing to results file")
 bm25 = BM25(inverted_index, doc_lengths)
-writeResults(results_file, queries, bm25, "run_name")
+
+print("Ranking top documents for all queries and creating associated file")
+writeResults("../Results_Scores/TopScoresAllQueries.txt", queries, bm25, "top_scores_run")
+
+print("\nRanking top 10 documents for the first 2 queries and creating associated file")
+writeResultsTop10First2("../Results_Scores/Top10AnswersFirst2Queries.txt", queries, bm25, "top_10_first_2_run")
+
+print("\nRanking all documents for all queries and creating associated file")
+writeResultsAll("../Results_Scores/AllScoresAllQueries.txt", queries, bm25, "all_scores_run")
 end_time = time.time() # end the timer
 print(f"\nTime taken to complete STEP 3 (RANKING DOCUMENTS): {end_time - start_time:.2f} seconds")
+print("")
+print("---------------------------------------------------------------------------------------")
 
 # STEP 4 - Return results
-print(f"\nRanking results written to {results_file}")
+print("---------------------------------------------------------------------------------------")
+print(f"\nRANKING: Top Documents For Each Query Written To:", "../Results_Scores/TopScoresAllQueries.txt")
+print(f"RANKING: Top 10 Documents For First 2 Queries Written To:", "../Results_Scores/Top10AnswersFirst2Queries.txt")
+print(f"RANKING: All Documents For Each Query Written To:", "../Results_Scores/AllScoresAllQueries.txt")
 print("STEP 4 COMPLETE")
+print("")
+print("---------------------------------------------------------------------------------------")
 
 # STEP 5 - Computing MAP Scores Through PYTREC_EVAL
+print("---------------------------------------------------------------------------------------")
 print("\nRunning The TREC_EVAL to retrieve the MAP Scores")
 
 def read_qrel(file_path):
@@ -116,7 +141,7 @@ def read_run(file_path):
 
 # get the file paths
 qrel_file = "../scifact/qrels/test.tsv"
-run_file = 'Results.txt'
+run_file = '../Results_Scores/AllScoresAllQueries.txt'
 
 # read the files (qrel) and (run)
 qrel = read_qrel(qrel_file)
@@ -127,7 +152,7 @@ evaluator = pytrec_eval.RelevanceEvaluator(qrel, {'map', 'ndcg'})
 results = evaluator.evaluate(run)
 
 # save the results to a file
-output_file = 'EvaluationResults.json'
+output_file = '../Results_Scores/MAPScores.json'
 with open(output_file, 'w') as f:
     json.dump(results, f, indent=1)
 
@@ -143,3 +168,5 @@ total_map = round(total_map, 5)
 # print the average map score
 print("The average MAP Score is: ", total_map)
 print("STEP 5 COMPLETE")
+print("")
+print("---------------------------------------------------------------------------------------")

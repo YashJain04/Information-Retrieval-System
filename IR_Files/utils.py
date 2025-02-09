@@ -24,8 +24,8 @@ def writeResults(results_file, queries, bm25, run_name):
             normalized_ranked_docs = normalize_scores(ranked_docs)
             count += 1
 
-            if normalized_ranked_docs:  # Ensure there's at least one result
-                top_doc_id, top_score = normalized_ranked_docs[0]  # Get only the top result
+            if normalized_ranked_docs:  # ensure there's at least one result
+                top_doc_id, top_score = normalized_ranked_docs[0]  # get only the top result
 
                 if 'json' in results_file:
                     beir_results[query_id] = [(top_doc_id, top_score)]
@@ -34,4 +34,57 @@ def writeResults(results_file, queries, bm25, run_name):
                     output_file.write(result_line)
 
         if 'json' in results_file:
+            json.dump(beir_results, output_file, indent=4)
+
+def writeResultsTop10First2(results_file, queries, bm25, run_name):
+    beir_results = {}
+    count = 1
+
+    with open(results_file, 'w') as output_file:
+        for query in queries:
+            query_id = query['num']
+            query_terms = query['title']
+            progress_bar(count, len(queries))
+            ranked_docs = bm25.rank_documents(query_terms)
+            normalized_ranked_docs = normalize_scores(ranked_docs)
+            count += 1
+
+            # keep only top 10 for the first two queries
+            if count < 4:
+                normalized_ranked_docs = normalized_ranked_docs[:10]
+
+                if 'json' in results_file:
+                    beir_results[query_id] = [(doc_id, score) for doc_id, score in normalized_ranked_docs]
+                
+                else:
+                    for rank, (doc_id, score) in enumerate(normalized_ranked_docs, start=1):
+                        result_line = f"{query_id} Q0 {doc_id} {rank} {score} {run_name}\n"
+                        output_file.write(result_line)
+
+        if 'json' in results_file:
+            json.dump(beir_results, output_file, indent=4)
+
+def writeResultsAll(results_file, queries, bm25, run_name):
+    beir_results = {}
+    count = 1
+
+    with open(results_file, 'w') as output_file:
+        for query in queries:
+            query_id = query['num']
+            query_terms = query['title']
+            progress_bar(count, len(queries))
+            ranked_docs = bm25.rank_documents(query_terms)
+            normalized_ranked_docs = normalize_scores(ranked_docs)
+            count += 1
+
+            # get all
+            if ('json' in results_file):
+                beir_results[query_id] = [(doc_id, score) for doc_id, score in normalized_ranked_docs]
+            
+            else:
+                for rank, (doc_id, score) in enumerate(normalized_ranked_docs, start=1):
+                    result_line = f"{query_id} Q0 {doc_id} {rank} {score} {run_name}\n"
+                    output_file.write(result_line)
+
+        if ('json' in results_file):
             json.dump(beir_results, output_file, indent=4)

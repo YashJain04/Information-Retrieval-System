@@ -12,6 +12,7 @@
 - Removed a lot of the unneccessary code and functions that were not needed, and revamped proccesses, helped with the report write up
 - Compared queries and documents for Results.txt ensuring that words appeared in both for the document per query
 - Conducted research on PYTREC and usage of Stemmers and implementation of TREC_EVAL and retrieval of MAP Scores
+- Helped with creating sample of 100 vocabulary and retrieving top 10 scores for first 2 queries
 
 2. Tolu Emoruwa's Work...
 - Developed Step 1 by removing stopWords and adding regex's for filtration
@@ -19,6 +20,7 @@
 - Assisted in refining the ranking process for better retrieval accuracy
 - Verified and analyzed results, ensuring MAP Scores were high enough for submission
 - Contributed to the report write up with detailed explanations
+- Helped with creating sample of 100 vocabulary and retrieving top 10 scores for first 2 queries
 
 3. Shacha Parker's Work...
 - Refactored Step 2 implementation for efficiency and readability
@@ -26,6 +28,7 @@
 - Conducted research comparing BM25 and COSINE SIM ranking algorithms
 - Investigated and research why words are cut off (stemmers)
 - Contributed to the report write up with detailed explanations
+- Helped with creating sample of 100 vocabulary and retrieving top 10 scores for first 2 queries
 
 ## Running Instructions:
 Ensure the following is installed:
