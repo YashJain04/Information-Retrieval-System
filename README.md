@@ -85,3 +85,6 @@ We decided to leverage the BM25 Algorithm because it has a higher retrieval perf
 
 ## Mean Average Precision (MAP) Score:
 Our final Mean Average Precison (MAP) Score is ~0.5 (exactly 0.49472) of how similar and accurate our measures are. This checks the correct and incorrect results of our Results.txt file (output from our code) and usage of PYTREC_EVAL to check that vs test.tsv file. The MAP score for every single document/query can be seen in the `EvaluationResults.json` file.
+
+## Comparing Results (Title VS Title + Text)
+blah blah blah add some text here discussing this
