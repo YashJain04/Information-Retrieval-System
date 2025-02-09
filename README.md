@@ -54,8 +54,7 @@ The `utils.py` file contains our utilities which is used for running the code. I
 - This file also has the `writeResults()` function which retrieves the top #1 score for the document for the specific associated query and writes the results to an output file called ***Results.txt***
 
 ### 0. Step Zero Implementation (Parsing)
-This step has it's functions and associated code within the parser.py file. This parser.py contains the 4 functions which help parse documents from the file (and this calls the document parsing function). It also helps parse queries from the file (and this calls the query parsing function). In essence, the purpose of this file is to read the JSON and extract information for both corpus.jsonl (documents) and queries.jsonl (queries). The 
-data structures and algorithms used in this step are simple hashmaps that seperate the actual document number, title of the text, and the actual text body into 3 seperate keys, this is for documents. For queries, again another hashmap is used to seperate the query number and query title as keys.
+This step has it's functions and associated code within the parser.py file. This parser.py contains the 4 functions which help parse documents from the file (and this calls the document parsing function). It also helps parse queries from the file (and this calls the query parsing function). In essence, the purpose of this file is to read the JSON and extract information for both corpus.jsonl (documents) and queries.jsonl (queries). The data structures and algorithms used in this step are simple hashmaps that seperate the actual document number, title of the text, and the actual text body into 3 seperate keys, this is for documents. For queries, again another hashmap is used to seperate the query number and query title as keys.
 
 This steps is before/mixed within the preprocessing (Step 1). The associated code for this step can be seen in the `parser.py` file.
 
@@ -87,4 +86,6 @@ We decided to leverage the BM25 Algorithm because it has a higher retrieval perf
 Our final Mean Average Precison (MAP) Score is ~0.5 (exactly 0.49472) of how similar and accurate our measures are. This checks the correct and incorrect results of our Results.txt file (output from our code) and usage of PYTREC_EVAL to check that vs test.tsv file. The MAP score for every single document/query can be seen in the `EvaluationResults.json` file.
 
 ## Comparing Results (Title VS Title + Text)
-blah blah blah add some text here discussing this
+We found that the MAP score was lower when we eliminated the body text ("TEXT") during preprocessing and kept only the title text ("TITLE") for the program to process beyond Step 1. With only the title text in the processed document, the MAP score was 0.31139. It's evident that the score was lowered by there being less text with which to match queries, causing the program to retrieve fewer relevant documents. Including both the title and body text resulted in a better MAP score.
+
+The code needed to change the program to preprocess only the head text without the body is found in main.py. Searching the document for "head_only" will show three lines that have been commented out. If you un-comment them and comment out the original functions, it'll run preprocessing with only the head text.
