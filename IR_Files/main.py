@@ -133,18 +133,25 @@ def read_qrel(file_path):
 
 def read_run(file_path):
     '''
-    Read the results file (Results.txt) and store it in run
+    Read the results file (Results.txt) and store it in run,
+    skipping the first 80,735 lines to get the test queries.
     '''
     run = {}
     with open(file_path, 'r') as f:
+        # skip the first 80,735 lines and start at the line where the first query is 1 (these are the test.tsv queries)
+        for _ in range(80735):
+            next(f)
+        
+        # process the rest of the file
         for line in f:
-            parts = line.strip().split() # split by any whitespace
-            if len(parts) >= 5: # ensure we have 6 columns
+            parts = line.strip().split()  # split by any whitespace
+            if len(parts) >= 6:  # ensure we have at least 6 columns
                 query_id, _, doc_id, rank, score, _ = parts[:6]
                 score = float(score)
                 if query_id not in run:
                     run[query_id] = {}
                 run[query_id][doc_id] = score
+
     return run
 
 # get the file paths
