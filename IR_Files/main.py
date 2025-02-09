@@ -91,6 +91,10 @@ writeResultsTop10First2("../Results_Scores/Top10AnswersFirst2Queries.txt", queri
 
 print("\nRanking all documents for all queries and creating associated file")
 writeResultsAll("../Results_Scores/AllScoresAllQueries.txt", queries, bm25, "all_scores_run")
+
+print("\nRanking top 100 documents for all queries and creating associated file. This is the file that will be used for final evaluation.")
+writeResultsTop100("../Results_Scores/Results.txt", queries, bm25, "top_100_best_run")
+
 end_time = time.time() # end the timer
 print(f"\nTime taken to complete STEP 3 (RANKING DOCUMENTS): {end_time - start_time:.2f} seconds")
 print("")
@@ -145,7 +149,7 @@ def read_run(file_path):
 
 # get the file paths
 qrel_file = "../scifact/qrels/test.tsv"
-run_file = '../Results_Scores/AllScoresAllQueries.txt'
+run_file = '../Results_Scores/Results.txt'
 
 # read the files (qrel) and (run)
 qrel = read_qrel(qrel_file)
@@ -167,7 +171,7 @@ print(f"Evaluation results saved to {output_file}")
 total_map = sum(results[query]['map'] for query in results) / len(results)  # average map scores for all queries
 
 # round to 3 decimal places
-total_map = round(total_map, 5)
+total_map = round(total_map, 8)
 
 # print the average map score
 print("The average MAP Score is: ", total_map)
