@@ -61,6 +61,29 @@ def preprocess_documents(documents):
     print(f"\nTime taken to parse and preprocess documents: {end_time - start_time:.2f} seconds")
     return documents
 
+# when it's being run only on heads, no text
+def preprocess_documents_head_only(documents):
+    previousId = "t"
+    count = 1
+    start_time = time.time()
+
+    for doc in documents:
+        fileId = str(doc['DOCNO'].split(" ")[0])
+        if (not (fileId == previousId)):
+            #print("Doc File: " +str(count))
+            progress_bar(count, len(documents))
+            previousId = fileId
+            count = count + 1
+
+        # instead of preproccessing text, remove any doc['TEXT'] and preprocess doc['HEAD']
+        doc.pop('TEXT', None)
+
+        doc['HEAD'] = preprocess_text(doc['HEAD'])
+    
+    end_time = time.time()
+    print(f"\nTime taken to parse and preprocess documents: {end_time - start_time:.2f} seconds")
+    return documents
+
 def preprocess_queries(queries):
     for query in queries:
         query['title'] = preprocess_text(query['title'])

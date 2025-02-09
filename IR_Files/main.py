@@ -30,7 +30,11 @@ print("")
 start_time = time.time() # start the timer
 print("Preprocessing documents")
 documents = parse_documents_from_file(doc_folder_path)
+
 documents = preprocess_documents(documents)
+#documents = preprocess_documents_head_only(documents)
+# if you want to preprocess only the head of the documents, use the above line instead, and uncomment the line above it
+
 print("Preprocessing queries")
 queries = preprocess_queries(parse_queries_from_file(query_file_path))
 end_time = time.time() # end the timer
@@ -40,7 +44,11 @@ print(f"Time taken to complete STEP 1 (PREPROCESS DOCS/QUERIES): {end_time - sta
 print("")
 start_time = time.time() # start the timer
 print("Building an inverted index.")
+
 inverted_index = build_inverted_index(documents)
+#inverted_index = build_inverted_index_head_only(documents)
+# if you want to build the inverted index using only the head of the documents, use the above line instead, and uncomment the line above it
+
 end_time = time.time() # end the timer
 print(f"Time taken to complete STEP 2 (BUILD INVERTED INDEX): {end_time - start_time:.2f} seconds")
 
@@ -48,7 +56,11 @@ print(f"Time taken to complete STEP 2 (BUILD INVERTED INDEX): {end_time - start_
 # STEP 3 - Retrieval and ranking
 print("")
 start_time = time.time() # start the timer
+
 doc_lengths = calculate_document_lengths(documents)
+#doc_lengths = calculate_document_lengths_head_only(documents)
+# if you want to calculate the document lengths using only the head of the documents, use the above line instead, and uncomment the line above it
+
 results_file = "Results.txt"   # change to Results.json for other version formatting
 beir_results = {}
 print("Ranking and writing to results file")
