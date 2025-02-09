@@ -55,9 +55,9 @@ def preprocess_documents(documents):
             progress_bar(count, len(documents))
             previousId = fileId
             count = count + 1
-        doc['TEXT'] = preprocess_text(doc['TEXT'])
         doc['HEAD'] = preprocess_text(doc['HEAD'])
-    
+        doc['TEXT'] = preprocess_text(doc['TEXT'])
+        
     end_time = time.time()
     print(f"\nTime taken to parse and preprocess documents: {end_time - start_time:.2f} seconds")
     return documents

@@ -63,7 +63,7 @@ print(f"\nTime taken to complete STEP 3 (RANKING DOCUMENTS): {end_time - start_t
 print(f"\nRanking results written to {results_file}")
 print("STEP 4 COMPLETE")
 
-# STEP 5 - Working On Trec Evaluation
+# STEP 5 - Computing MAP Scores Through PYTREC_EVAL
 print("\nRunning The TREC_EVAL to retrieve the MAP Scores")
 
 def read_qrel(file_path):
