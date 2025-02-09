@@ -53,13 +53,13 @@ The `utils.py` file contains our utilities which is used for running the code. I
 - This is a helper file that is used within `main.py` it creates progress bars for visualization in the terminal
 - This file also has the `writeResults()` function which retrieves the top #1 score for the document for the specific associated query and writes the results to an output file called ***Results.txt***
 
-0. Step Zero Implementation (Parsing)
+### 0. Step Zero Implementation (Parsing)
 This step has it's functions and associated code within the parser.py file. This parser.py contains the 4 functions which help parse documents from the file (and this calls the document parsing function). It also helps parse queries from the file (and this calls the query parsing function). In essence, the purpose of this file is to read the JSON and extract information for both corpus.jsonl (documents) and queries.jsonl (queries). The 
 data structures and algorithms used in this step are simple hashmaps that seperate the actual document number, title of the text, and the actual text body into 3 seperate keys, this is for documents. For queries, again another hashmap is used to seperate the query number and query title as keys.
 
 This steps is before/mixed within the preprocessing (Step 1). The associated code for this step can be seen in the `parser.py` file.
 
-1. Step One Implementation (Preprocessing)
+### 1. Step One Implementation (Preprocessing)
 Preprocessing is implemented through 2 steps (preprocessing documents) and (preprocessing queries) and is completed within the `preprocessing.py` file. This file has all the associated code and functions to complete the preprocessing step. The 2 seperate steps are highlighted below:
 
 ### 1.1 Preprocessing Documents
@@ -72,10 +72,10 @@ This step's output is stored across 2 files and in here you can see the cleaned 
 - `preprocessed_documents.json`
 - `preprocessed_queries.json`
 
-2. Step Two Implementation (Indexing)
+### 2. Step Two Implementation (Indexing)
 In this step we start to build our inverted index from the cleaned and validated documents from STEP 1. We leverage a hashmap that efficiently maps each unique token to the documents in which it appears, along with the frequency of its occurrences. The `build_inverted_index` function constructs this index by iterating through the provided documents, ensuring quick lookup and retrieval of term-document associations. Additionally, the `calculate_document_lengths` function computes the length of each document, which is used when computing the BM25 score for ranking and retrieval. The process is done inside `indexing.py` and the output from this step can be seen in `inverted_index.json`.
 
-3. Step Three Implementation (Ranking & Retrieval)
+### 3. Step Three Implementation (Ranking & Retrieval)
 In this step, we use our inverted index from STEP 2 to complete the ranking, scoring, and retrieval process much more ***efficiently***. With the `inverted_index`, we compute the document length as said before, which will be needed for the ***BM25 ranking score algorithm***. We then start our ranking process, which utilizes the BM25 ranking score algorithm to determine the most relevant documents for a given query. The BM25 ranking function assigns scores to documents based on term frequency, inverse document frequency, and document length normalization. Using the `BM25` class, we compute the **Inverse Document Frequency (IDF)** for each query term, ensuring that less frequent terms contribute more to the ranking. The **Term Frequency (TF)** component is adjusted using the `k1` and `b` parameters to balance term importance while considering document length. Once we have computed the BM25 scores for all relevant documents, we sort them in descending order to present the most relevant results first. Additionally, we apply a **score normalization function**, ensuring that the ranking values are scaled between 0 and 1, making them easier to interpret.
 
 This step's output is stored in the `Results.txt` file and here you can see our final results. The associated code and functions for this step can be seen in the `ranking.py` file.
